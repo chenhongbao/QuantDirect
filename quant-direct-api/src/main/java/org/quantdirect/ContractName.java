@@ -21,7 +21,11 @@ public class ContractName {
     private String i;
     private String e;
 
-    ContractName(String instrumentId, String exchangeId) {
+    public static ContractName create(String instrumentId, String exchangeId) {
+        return new ContractName(instrumentId, exchangeId);
+    }
+
+    private ContractName(String instrumentId, String exchangeId) {
         i = instrumentId;
         e = exchangeId;
     }

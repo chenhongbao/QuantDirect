@@ -17,28 +17,27 @@
 
 package org.quantdirect.platform;
 
-import org.quantdirect.Gateway;
 import org.quantdirect.GatewayListener;
-import org.quantdirect.messager.Messager;
+import org.quantdirect.tools.LOG;
 
 class QdGatewayListener implements GatewayListener {
     @Override
     public void onStart() {
-        Messager.instance().send("Gateway starts.", this);
+        LOG.write("Gateway starts.", this);
     }
 
     @Override
     public void onOpen() {
-        Messager.instance().send("Gateway opens.", this);
+        LOG.write("Gateway opens.", this);
     }
 
     @Override
     public void onClose() {
-        Messager.instance().send("Gateway closes.", this);
+        LOG.write("Gateway closes.", this);
     }
 
     @Override
     public void onStop() {
-        Messager.instance().send("Gateway stops.", this);
+        LOG.write("Gateway stops.", this);
     }
 }

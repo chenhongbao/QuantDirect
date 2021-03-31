@@ -18,7 +18,7 @@
 package org.quantdirect;
 
 public interface Quanter {
-    void onStart(Position position);
+    void onStart(Master master);
 
     void onOpen(Transaction transaction, Feed feed);
 

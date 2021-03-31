@@ -19,9 +19,9 @@ package org.quantdirect.platform;
 
 import org.quantdirect.*;
 import org.quantdirect.loader.Loader;
-import org.quantdirect.messager.Messager;
+import org.quantdirect.tools.LOG;
 import org.quantdirect.persistence.Persistence;
-import org.quantdirect.tools.Tools;
+import org.quantdirect.tools.TOOLS;
 
 import java.io.IOException;
 import java.util.Date;
@@ -34,9 +34,9 @@ class QdTransaction implements Transaction {
     public void trade(Order order, int timeout, TimeUnit unit) throws TimeoutException, IOException {
         var h = new QdOrderHandler(order);
         Loader.instance().gateway().create(order, h);
-        if (!h.join(timeout, unit)) {
+        if (!h.wait(timeout, unit)) {
             Loader.instance().gateway().delete(order);
-            if (!h.join(timeout, unit)) {
+            if (!h.wait(timeout, unit)) {
                 throw new TimeoutException("Delete order timeout.");
             }
             throw new TimeoutException("Create order timeout.");
@@ -58,11 +58,11 @@ class QdTransaction implements Transaction {
             latch = new CountDownLatch(1);
         }
 
-        boolean join(int timeout, TimeUnit unit) {
+        boolean wait(int timeout, TimeUnit unit) {
             try {
                 return latch.await(timeout, unit);
             } catch (InterruptedException e) {
-                Messager.instance().send(e, this);
+                LOG.write(e, this);
                 return false;
             }
         }
@@ -94,9 +94,9 @@ class QdTransaction implements Transaction {
         }
 
         private void removeContracts(Trade trade) {
-            Persistence.instance().removeContract(trade.getInstrumentId(),
+            Persistence.instance().closeContract(trade.getInstrumentId(),
                     trade.getExchangeId(), opDirection(trade.getDirection()),
-                    trade.getOffset(), trade.getPrice(), trade.getQuantity());
+                    trade.getPrice(), trade.getQuantity(), trade.getUpdateTime());
         }
 
         private Direction opDirection(Direction direction) {
@@ -112,7 +112,7 @@ class QdTransaction implements Transaction {
 
         private Contract createContract(Trade trade) {
             var c = new Contract();
-            c.setContractId(Tools.nextId());
+            c.setContractId(TOOLS.nextId());
             c.setInstrumentId(trade.getInstrumentId());
             c.setExchangeId(trade.getExchangeId());
             c.setDirection(trade.getDirection());

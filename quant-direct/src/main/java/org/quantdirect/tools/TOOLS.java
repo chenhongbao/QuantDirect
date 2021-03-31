@@ -15,20 +15,15 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package org.quantdirect.messager;
+package org.quantdirect.tools;
 
-public abstract class Messager {
+import java.util.concurrent.atomic.AtomicLong;
 
-    private static Messager msg;
+public class TOOLS {
 
-    public static synchronized Messager instance() {
-        if (msg == null) {
-            msg = new QdMessager();
-        }
-        return msg;
+    private static final AtomicLong a = new AtomicLong(0);
+
+    public static String nextId() {
+        return Long.toString(a.incrementAndGet());
     }
-
-    public abstract void send(String message, Object source);
-
-    public abstract void send(Throwable throwable, Object source);
 }

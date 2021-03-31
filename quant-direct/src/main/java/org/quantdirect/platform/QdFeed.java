@@ -22,7 +22,7 @@ import org.quantdirect.Feed;
 import org.quantdirect.MarketHandler;
 import org.quantdirect.Tick;
 import org.quantdirect.loader.Loader;
-import org.quantdirect.messager.Messager;
+import org.quantdirect.tools.LOG;
 
 import java.io.IOException;
 import java.util.Date;
@@ -44,7 +44,7 @@ class QdFeed implements Feed {
         if (instrumentId == null || handler == null) {
             return;
         }
-        if (!h.contains(instrumentId)) {
+        if (!h.has(instrumentId)) {
             Loader.instance().datafeed().subscribe(instrumentId, h);
         }
         h.subscribe(instrumentId, handler);
@@ -55,7 +55,7 @@ class QdFeed implements Feed {
         if (instrumentId == null) {
             return;
         }
-        if (!h.contains(instrumentId)) {
+        if (!h.has(instrumentId)) {
             return;
         }
         Loader.instance().datafeed().unsubscribe(instrumentId);
@@ -68,7 +68,7 @@ class QdFeed implements Feed {
             return;
         }
         h.remove(instrumentId, handler);
-        if (!h.contains(instrumentId)) {
+        if (!h.has(instrumentId)) {
             Loader.instance().datafeed().unsubscribe(instrumentId);
         }
     }
@@ -105,7 +105,7 @@ class QdFeed implements Feed {
             }
         }
 
-        boolean contains(String instrumentId) {
+        boolean has(String instrumentId) {
             return sub.containsKey(instrumentId);
         }
 
@@ -118,7 +118,7 @@ class QdFeed implements Feed {
                     try {
                         h.onTick(tick);
                     } catch (Throwable throwable) {
-                        Messager.instance().send(throwable, self);
+                        LOG.write(throwable, self);
                     }
                 });
             }
@@ -133,7 +133,7 @@ class QdFeed implements Feed {
                     try {
                         h.onCandle(candle);
                     } catch (Throwable throwable) {
-                        Messager.instance().send(throwable, self);
+                        LOG.write(throwable, self);
                     }
                 });
             }
@@ -142,15 +142,15 @@ class QdFeed implements Feed {
         @Override
         public void onError(int code, String message) {
             final QdMarketHandler self = this;
-            sub.values().stream().parallel().forEach(s -> {
-                s.stream().parallel().forEach(h -> {
-                    try {
-                        h.onError(code, message);
-                    } catch (Throwable throwable) {
-                        Messager.instance().send(throwable, self);
-                    }
-                });
-            });
+            sub.values().stream().parallel()
+               .forEach(s -> s.stream().parallel()
+                              .forEach(h -> {
+                                  try {
+                                      h.onError(code, message);
+                                  } catch (Throwable throwable) {
+                                      LOG.write(throwable, self);
+                                  }
+                              }));
         }
     }
 }

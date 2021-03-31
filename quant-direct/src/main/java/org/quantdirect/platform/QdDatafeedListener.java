@@ -19,7 +19,7 @@ package org.quantdirect.platform;
 
 import org.quantdirect.*;
 import org.quantdirect.loader.Loader;
-import org.quantdirect.messager.Messager;
+import org.quantdirect.tools.LOG;
 
 class QdDatafeedListener implements DatafeedListener {
 
@@ -28,25 +28,25 @@ class QdDatafeedListener implements DatafeedListener {
 
     @Override
     public void onStart() {
-        Messager.instance().send("Datafeed starts.", this);
+        LOG.write("Datafeed starts.", this);
         callStart();
     }
 
     @Override
     public void onOpen() {
-        Messager.instance().send("Datafeed opens.", this);
+        LOG.write("Datafeed opens.", this);
         callOpen();
     }
 
     @Override
     public void onClose() {
-        Messager.instance().send("Datafeed closes.", this);
+        LOG.write("Datafeed closes.", this);
         callClose();
     }
 
     @Override
     public void onStop() {
-        Messager.instance().send("Datafeed stops.", this);
+        LOG.write("Datafeed stops.", this);
         callStop();
     }
 
@@ -54,9 +54,9 @@ class QdDatafeedListener implements DatafeedListener {
         final QdDatafeedListener k = this;
         Loader.instance().copyDirects().stream().parallel().forEach(direct -> {
             try {
-                direct.onStart(QdPosition.instance());
+                direct.onStart(QdMaster.instance());
             } catch (Throwable throwable) {
-                Messager.instance().send(throwable, k);
+                LOG.write(throwable, k);
             }
         });
     }
@@ -69,7 +69,7 @@ class QdDatafeedListener implements DatafeedListener {
             try {
                 direct.onOpen(tr, fd);
             } catch (Throwable throwable) {
-                Messager.instance().send(throwable, k);
+                LOG.write(throwable, k);
             }
         });
     }
@@ -80,7 +80,7 @@ class QdDatafeedListener implements DatafeedListener {
             try {
                 direct.onClose();
             } catch (Throwable throwable) {
-                Messager.instance().send(throwable, k);
+                LOG.write(throwable, k);
             }
         });
     }
@@ -91,7 +91,7 @@ class QdDatafeedListener implements DatafeedListener {
             try {
                 direct.onStop();
             } catch (Throwable throwable) {
-                Messager.instance().send(throwable, k);
+                LOG.write(throwable, k);
             }
         });
     }

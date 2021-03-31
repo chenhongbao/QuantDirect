@@ -15,15 +15,20 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package org.quantdirect.tools;
+package org.quantdirect;
 
-import java.util.concurrent.atomic.AtomicLong;
+import java.time.LocalDateTime;
+import java.util.Collection;
+import java.util.logging.Logger;
 
-public class Tools {
+public interface Master {
+    Logger getLogger();
 
-    private static final AtomicLong a = new AtomicLong(0);
+    Collection<ContractName> getContractNames();
 
-    public static String nextId() {
-        return Long.toString(a.incrementAndGet());
-    }
+    Collection<Contract> getContracts(String instrumentId, String exchangeId, Direction direction);
+
+    long countOpenContracts(String instrumentId, String exchangeId, Direction direction, LocalDateTime before);
+
+    long countContracts(String instrumentId, String exchangeId, Direction direction, LocalDateTime before);
 }

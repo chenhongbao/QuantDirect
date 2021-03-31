@@ -20,21 +20,35 @@ package org.quantdirect.platform;
 import org.quantdirect.Contract;
 import org.quantdirect.ContractName;
 import org.quantdirect.Direction;
-import org.quantdirect.Position;
+import org.quantdirect.Master;
 import org.quantdirect.persistence.Persistence;
 
 import java.time.LocalDateTime;
 import java.util.Collection;
+import java.util.logging.Logger;
 
-class QdPosition implements Position {
+class QdMaster implements Master {
 
-    private static Position p;
+    private static Master p;
+    private static Logger l;
 
-    static synchronized Position instance() {
+    private QdMaster() {}
+
+    static synchronized Master instance() {
         if (p == null) {
-            p = new QdPosition();
+            p = new QdMaster();
         }
         return p;
+    }
+
+    @Override
+    public synchronized Logger getLogger() {
+        if (l == null) {
+            l = Logger.getLogger("MASTER");
+            l.setUseParentHandlers(false);
+            l.addHandler(QdLoggerHandler.instance());
+        }
+        return l;
     }
 
     @Override
@@ -48,7 +62,12 @@ class QdPosition implements Position {
     }
 
     @Override
+    public long countOpenContracts(String instrumentId, String exchangeId, Direction direction, LocalDateTime before) {
+        return Persistence.instance().countOpenContractsBefore(instrumentId, exchangeId, direction, before);
+    }
+
+    @Override
     public long countContracts(String instrumentId, String exchangeId, Direction direction, LocalDateTime before) {
-        return Persistence.instance().countContracts(instrumentId, exchangeId, direction, before);
+        return Persistence.instance().countContractsBefore(instrumentId, exchangeId, direction, before);
     }
 }

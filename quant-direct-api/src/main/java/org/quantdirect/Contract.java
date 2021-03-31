@@ -17,6 +17,7 @@
 package org.quantdirect;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 public class Contract {
     private String contractId;
@@ -27,8 +28,17 @@ public class Contract {
     private double openPrice;
     private double closePrice;
     private LocalDate tradingDay;
+    private LocalDateTime closeTime;
 
     public Contract() {
+    }
+
+    public LocalDateTime getCloseTime() {
+        return closeTime;
+    }
+
+    public void setCloseTime(LocalDateTime closeTime) {
+        this.closeTime = closeTime;
     }
 
     public String getContractId() {

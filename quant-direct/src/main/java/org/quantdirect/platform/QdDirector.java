@@ -17,30 +17,38 @@
 
 package org.quantdirect.platform;
 
+import org.h2.tools.Server;
 import org.quantdirect.Datafeed;
 import org.quantdirect.Quanter;
 import org.quantdirect.Gateway;
 import org.quantdirect.loader.Loader;
-import org.quantdirect.messager.Messager;
+import org.quantdirect.persistence.DbServer;
+import org.quantdirect.tools.LOG;
 
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 
 class QdDirector extends Director {
-    private File base;
+    private final File base;
     private Status status;
 
     QdDirector(String baseDirectory) {
         status = Status.STOPPED;
-        base = new File(baseDirectory);
-        if (!base.isDirectory()) {
+        base = baseDir(baseDirectory);
+        DbServer.start();
+    }
+
+    private File baseDir(String dir) {
+        var f = new File(dir);
+        if (!f.isDirectory()) {
             try {
-                Files.createDirectories(base.toPath());
+                Files.createDirectories(f.toPath());
             } catch (IOException exception) {
-                throw new Error("Can't create base dir: " + baseDirectory  +".", exception);
+                throw new Error("Can't create base dir: " + f.getAbsolutePath()  +".", exception);
             }
         }
+        return f;
     }
 
     @Override
@@ -71,7 +79,7 @@ class QdDirector extends Director {
             status = Status.STATED;
         } catch (Throwable throwable) {
             status = Status.START_FAIL;
-            Messager.instance().send(throwable, this);
+            LOG.write(throwable, this);
         }
     }
 
@@ -83,7 +91,7 @@ class QdDirector extends Director {
             status = Status.STOPPED;
         } catch (Throwable throwable) {
             status = Status.STOP_FAIL;
-            Messager.instance().send(throwable, this);
+            LOG.write(throwable, this);
         }
     }
 

@@ -39,12 +39,17 @@ public abstract class Persistence {
 
     public abstract void insert(Contract contract);
 
-    public abstract void removeContract(String instrumentId, String exchangeId,
-            Direction direction, Offset offset, double price, long quantity);
+    public abstract void closeContract(String instrumentId, String exchangeId,
+            Direction direction, double price, long quantity, LocalDateTime closeTime);
 
     public abstract Collection<ContractName> getContractNames();
 
-    public abstract Collection<Contract> getContracts(String instrumentId, String exchangeId, Direction direction);
+    public abstract Collection<Contract> getContracts(String instrumentId,
+            String exchangeId, Direction direction);
 
-    public abstract long countContracts(String instrumentId, String exchangeId, Direction direction, LocalDateTime before);
+    public abstract long countContractsBefore(String instrumentId, String exchangeId,
+            Direction direction, LocalDateTime before);
+
+    public abstract long countOpenContractsBefore(String instrumentId, String exchangeId,
+            Direction direction, LocalDateTime before);
 }
