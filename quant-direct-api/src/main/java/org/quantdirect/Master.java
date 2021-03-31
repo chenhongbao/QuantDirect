@@ -31,4 +31,8 @@ public interface Master {
     long countOpenContracts(String instrumentId, String exchangeId, Direction direction, LocalDateTime before);
 
     long countContracts(String instrumentId, String exchangeId, Direction direction, LocalDateTime before);
+
+    void setProperty(String key, String value);
+
+    String getProperty(String key);
 }

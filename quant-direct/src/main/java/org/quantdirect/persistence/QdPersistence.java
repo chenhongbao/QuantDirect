@@ -139,31 +139,31 @@ class QdPersistence extends Persistence {
 
     @Override
     public void insert(Trade trade) {
+        String sql = "INSERT INTO _TRADE_TABLE(" +
+                     "_TRADE_ID, " +
+                     "_ORDER_ID, " +
+                     "_INSTRUMENT_ID, " +
+                     "_EXCHANGE_ID, " +
+                     "_PRICE, " +
+                     "_QUANTITY, " +
+                     "_DIRECTION, " +
+                     "_OFFSET, " +
+                     "_TRADING_DAY, " +
+                     "_UPDATE_TIME)\n" +
+                     "VALUES (" +
+                     toSql(trade.getTradeId()) + "," +
+                     toSql(trade.getOrderId()) + "," +
+                     toSql(trade.getInstrumentId()) + "," +
+                     toSql(trade.getExchangeId()) + "," +
+                     toSql(trade.getPrice()) + "," +
+                     toSql(trade.getQuantity()) + "," +
+                     toSql(trade.getDirection()) + "," +
+                     toSql(trade.getOffset()) + "," +
+                     toSql(trade.getTradingDay()) + "," +
+                     toSql(trade.getUpdateTime()) +
+                     ")";
         try {
             ensureTrade();
-            String sql = "INSERT INTO _TRADE_TABLE(" +
-                         "_TRADE_ID, " +
-                         "_ORDER_ID, " +
-                         "_INSTRUMENT_ID, " +
-                         "_EXCHANGE_ID, " +
-                         "_PRICE, " +
-                         "_QUANTITY, " +
-                         "_DIRECTION, " +
-                         "_OFFSET, " +
-                         "_TRADING_DAY, " +
-                         "_UPDATE_TIME)\n" +
-                         "VALUES (" +
-                         toSql(trade.getTradeId()) + "," +
-                         toSql(trade.getOrderId()) + "," +
-                         toSql(trade.getInstrumentId()) + "," +
-                         toSql(trade.getExchangeId()) + "," +
-                         toSql(trade.getPrice()) + "," +
-                         toSql(trade.getQuantity()) + "," +
-                         toSql(trade.getDirection()) + "," +
-                         toSql(trade.getOffset()) + "," +
-                         toSql(trade.getTradingDay()) + "," +
-                         toSql(trade.getUpdateTime()) +
-                         ")";
             sqlUpdate(sql, 1);
         } catch (SQLException throwable) {
             LOG.write(throwable, this);
@@ -223,33 +223,33 @@ class QdPersistence extends Persistence {
 
     @Override
     public void insert(Order order) {
+        String sql = "INSERT INTO _ORDER_TABLE (" +
+                     "_ORDER_ID, " +
+                     "_INSTRUMENT_ID, " +
+                     "_EXCHANGE_ID, " +
+                     "_PRICE, " +
+                     "_QUANTITY, " +
+                     "_STATUS, " +
+                     "_STATUE_MESSAGE, " +
+                     "_DIRECTION, " +
+                     "_OFFSET, " +
+                     "_TRADING_DAY, " +
+                     "_UPDATE_TIME) " +
+                     "VALUES (" +
+                     toSql(order.getOrderId()) + "," +
+                     toSql(order.getInstrumentId()) + "," +
+                     toSql(order.getExchangeId()) + "," +
+                     toSql(order.getPrice()) + "," +
+                     toSql(order.getQuantity()) + "," +
+                     toSql(order.getStatus()) + "," +
+                     toSql(order.getStatusMessage()) + "," +
+                     toSql(order.getDirection()) + "," +
+                     toSql(order.getOffset()) + "," +
+                     toSql(order.getTradingDay()) + "," +
+                     toSql(order.getUpdateTime()) +
+                     ")";
         try {
             ensureOrder();
-            String sql = "INSERT INTO _ORDER_TABLE (" +
-                         "_ORDER_ID, " +
-                         "_INSTRUMENT_ID, " +
-                         "_EXCHANGE_ID, " +
-                         "_PRICE, " +
-                         "_QUANTITY, " +
-                         "_STATUS, " +
-                         "_STATUE_MESSAGE, " +
-                         "_DIRECTION, " +
-                         "_OFFSET, " +
-                         "_TRADING_DAY, " +
-                         "_UPDATE_TIME) " +
-                         "VALUES (" +
-                         toSql(order.getOrderId()) + "," +
-                         toSql(order.getInstrumentId()) + "," +
-                         toSql(order.getExchangeId()) + "," +
-                         toSql(order.getPrice()) + "," +
-                         toSql(order.getQuantity()) + "," +
-                         toSql(order.getStatus()) + "," +
-                         toSql(order.getStatusMessage()) + "," +
-                         toSql(order.getDirection()) + "," +
-                         toSql(order.getOffset()) + "," +
-                         toSql(order.getTradingDay()) + "," +
-                         toSql(order.getUpdateTime()) +
-                         ")";
             sqlUpdate(sql, 1);
         } catch (SQLException throwable) {
             LOG.write(throwable, this);
@@ -258,29 +258,29 @@ class QdPersistence extends Persistence {
 
     @Override
     public void insert(Contract contract) {
+        String sql = "INSERT INTO _CONTRACT_TABLE(" +
+                     "_CONTRACT_ID, " +
+                     "_TRADE_ID, " +
+                     "_INSTRUMENT_ID, " +
+                     "_EXCHANGE_ID, " +
+                     "_DIRECTION, " +
+                     "_OPEN_PRICE, " +
+                     "_CLOSE_PRICE, " +
+                     "_TRADING_DAY, " +
+                     "_CLOSE_TIME)" +
+                     "VALUES (" +
+                     toSql(contract.getContractId()) + "," +
+                     toSql(contract.getTradeId()) + "," +
+                     toSql(contract.getInstrumentId()) + "," +
+                     toSql(contract.getExchangeId()) + "," +
+                     toSql(contract.getDirection()) + "," +
+                     toSql(contract.getOpenPrice()) + "," +
+                     toSql(contract.getClosePrice()) + "," +
+                     toSql(contract.getTradingDay()) + "," +
+                     toSql(contract.getCloseTime()) +
+                     ")";
         try {
             ensureContractTable();
-            String sql = "INSERT INTO _CONTRACT_TABLE(" +
-                         "_CONTRACT_ID, " +
-                         "_TRADE_ID, " +
-                         "_INSTRUMENT_ID, " +
-                         "_EXCHANGE_ID, " +
-                         "_DIRECTION, " +
-                         "_OPEN_PRICE, " +
-                         "_CLOSE_PRICE, " +
-                         "_TRADING_DAY, " +
-                         "_CLOSE_TIME)" +
-                         "VALUES (" +
-                         toSql(contract.getContractId()) + "," +
-                         toSql(contract.getTradeId()) + "," +
-                         toSql(contract.getInstrumentId()) + "," +
-                         toSql(contract.getExchangeId()) + "," +
-                         toSql(contract.getDirection()) + "," +
-                         toSql(contract.getOpenPrice()) + "," +
-                         toSql(contract.getClosePrice()) + "," +
-                         toSql(contract.getTradingDay()) + "," +
-                         toSql(contract.getCloseTime()) +
-                         ")";
             sqlUpdate(sql, 1);
         } catch (SQLException throwable) {
             LOG.write(throwable, this);
@@ -290,20 +290,20 @@ class QdPersistence extends Persistence {
     @Override
     public void closeContract(String instrumentId, String exchangeId, Direction direction,
             double price, long quantity, LocalDateTime closeTime) {
+        String sql = "UPDATE _CONTRACT_TABLE " +
+                     "SET _CLOSE_PRICE = " + toSql(price) + ", " +
+                     "_CLOSE_TIME  = " + toSql(closeTime) + " " +
+                     "WHERE _CONTRACT_ID IN ( " +
+                     "    SELECT _CONTRACT_ID " +
+                     "    FROM _CONTRACT_TABLE " +
+                     "    WHERE _INSTRUMENT_ID = " + toSql(instrumentId) +
+                     "      AND _EXCHANGE_ID = " + toSql(exchangeId) +
+                     "      AND _DIRECTION = " + toSql(direction) +
+                     "    ORDER BY _TRADING_DAY " +
+                     "    LIMIT " + toSql(quantity) + " " +
+                     "    )";
         try {
             ensureContractTable();
-            String sql = "UPDATE _CONTRACT_TABLE " +
-                         "SET _CLOSE_PRICE = " + toSql(price) + ", " +
-                         "_CLOSE_TIME  = " + toSql(closeTime) + " " +
-                         "WHERE _CONTRACT_ID IN ( " +
-                         "    SELECT _CONTRACT_ID " +
-                         "    FROM _CONTRACT_TABLE " +
-                         "    WHERE _INSTRUMENT_ID = " + toSql(instrumentId) +
-                         "      AND _EXCHANGE_ID = " + toSql(exchangeId) +
-                         "      AND _DIRECTION = " + toSql(direction) +
-                         "    ORDER BY _TRADING_DAY " +
-                         "    LIMIT " + toSql(quantity) + " " +
-                         "    )";
             sqlUpdate(sql, (int) quantity);
         } catch (SQLException throwable) {
             LOG.write(throwable, this);
@@ -340,13 +340,13 @@ class QdPersistence extends Persistence {
 
     @Override
     public Collection<Contract> getContracts(String instrumentId, String exchangeId, Direction direction) {
+        String sql = "SELECT * " +
+                     "FROM _CONTRACT_TABLE " +
+                     "WHERE _INSTRUMENT_ID = " + toSql(instrumentId) +
+                     "  AND _EXCHANGE_ID = " + toSql(exchangeId) +
+                     "  AND _DIRECTION = " + toSql(direction);
         try {
             ensureContractTable();
-            String sql = "SELECT * " +
-                         "FROM _CONTRACT_TABLE " +
-                         "WHERE _INSTRUMENT_ID = " + toSql(instrumentId) +
-                         "  AND _EXCHANGE_ID = " + toSql(exchangeId) +
-                         "  AND _DIRECTION = " + toSql(direction);
             var rs = sqlQuery(sql);
             return toContracts(rs);
         } catch (SQLException throwable) {
@@ -389,15 +389,15 @@ class QdPersistence extends Persistence {
     @Override
     public long countContractsBefore(String instrumentId, String exchangeId, Direction direction,
             LocalDateTime before) {
+        var n = before.toInstant(ZoneOffset.ofHours(8)).toEpochMilli();
+        String sql = "SELECT COUNT(*) " +
+                     "FROM _CONTRACT_TABLE " +
+                     "WHERE _INSTRUMENT_ID = " + toSql(instrumentId) +
+                     "  AND _EXCHANGE_ID = " + toSql(exchangeId) +
+                     "  AND _DIRECTION = " + toSql(direction) +
+                     "  AND _TRADING_DAY < " + toSql(before);
         try {
             ensureContractTable();
-            var n = before.toInstant(ZoneOffset.ofHours(8)).toEpochMilli();
-            String sql = "SELECT COUNT(*) " +
-                         "FROM _CONTRACT_TABLE " +
-                         "WHERE _INSTRUMENT_ID = " + toSql(instrumentId) +
-                         "  AND _EXCHANGE_ID = " + toSql(exchangeId) +
-                         "  AND _DIRECTION = " + toSql(direction) +
-                         "  AND _TRADING_DAY < " + toSql(before);
             var rs = sqlQuery(sql);
             if (rs.next()) {
                 return rs.getLong(1);
@@ -411,16 +411,16 @@ class QdPersistence extends Persistence {
     @Override
     public long countOpenContractsBefore(String instrumentId, String exchangeId,
             Direction direction, LocalDateTime before) {
+        var n = before.toInstant(ZoneOffset.ofHours(8)).toEpochMilli();
+        String sql = "SELECT COUNT(*) " +
+                     "FROM _CONTRACT_TABLE " +
+                     "WHERE _INSTRUMENT_ID = " + toSql(instrumentId) +
+                     "  AND _EXCHANGE_ID = " + toSql(exchangeId) +
+                     "  AND _DIRECTION = " + toSql(direction) +
+                     "  AND (_CLOSE_TIME IS NULL OR _CLOSE_TIME = 0)\n" +
+                     "  AND _TRADING_DAY < " + toSql(before);
         try {
             ensureContractTable();
-            var n = before.toInstant(ZoneOffset.ofHours(8)).toEpochMilli();
-            String sql = "SELECT COUNT(*) " +
-                         "FROM _CONTRACT_TABLE " +
-                         "WHERE _INSTRUMENT_ID = " + toSql(instrumentId) +
-                         "  AND _EXCHANGE_ID = " + toSql(exchangeId) +
-                         "  AND _DIRECTION = " + toSql(direction) +
-                         "  AND (_CLOSE_TIME IS NULL OR _CLOSE_TIME = 0)\n" +
-                         "  AND _TRADING_DAY < " + toSql(before);
             var rs = sqlQuery(sql);
             if (rs.next()) {
                 return rs.getLong(1);
@@ -429,5 +429,75 @@ class QdPersistence extends Persistence {
             LOG.write(throwable, this);
         }
         return 0;
+    }
+
+    @Override
+    public void setProperty(String key, String value) {
+        var p = getProperty(key);
+        if (p == null) {
+            insertProperty(key, value);
+        } else {
+            updateProperty(key, value);
+        }
+    }
+
+    private void updateProperty(String key, String value) {
+        String sql = "UPDATE _PROPERTY_TABLE SET _VALUE = " +
+                     toSql(value) +
+                     " WHERE _KEY = " +
+                     toSql(key);
+        try {
+            ensurePropertyTable();
+            sqlUpdate(sql, 1);
+        } catch (SQLException throwable) {
+            LOG.write(throwable, this);
+        }
+    }
+
+    private void insertProperty(String key, String value) {
+        String sql = "INSERT INTO _PROPERTY_TABLE (" +
+                     "_KEY, " +
+                     "_VALUE) " +
+                     "VALUES (" +
+                     toSql(key) + "," +
+                     toSql(value) +
+                     ")";
+        try {
+            sqlUpdate(sql, 1);
+        } catch (SQLException throwables) {
+            LOG.write(throwables, this);
+        }
+    }
+
+    @Override
+    public String getProperty(String key) {
+        try {
+            ensurePropertyTable();
+            String sql = "SELECT _VALUE FROM _PROPERTY_TABLE WHERE _KEY = " + toSql(key);
+            var rs = sqlQuery(sql);
+            if (rs.next()) {
+                return rs.getString(1);
+            } else {
+                return null;
+            }
+        } catch (SQLException throwable) {
+            LOG.write(throwable, this);
+            return null;
+        }
+    }
+
+    private void ensurePropertyTable() throws SQLException {
+        if (!tableExists("_PROPERTY_TABLE")) {
+            createPropertyTable();
+        }
+    }
+
+    private void createPropertyTable() throws SQLException {
+        String sql = "CREATE TABLE _PROPERTY_TABLE\n" +
+                     "(\n" +
+                     "    _KEY   CHAR(128),\n" +
+                     "    _VALUE CHAR(128)\n" +
+                     ")";
+        sqlCreate(sql);
     }
 }

@@ -70,4 +70,14 @@ class QdMaster implements Master {
     public long countContracts(String instrumentId, String exchangeId, Direction direction, LocalDateTime before) {
         return Persistence.instance().countContractsBefore(instrumentId, exchangeId, direction, before);
     }
+
+    @Override
+    public void setProperty(String key, String value) {
+        Persistence.instance().setProperty(key, value);
+    }
+
+    @Override
+    public String getProperty(String key) {
+        return Persistence.instance().getProperty(key);
+    }
 }

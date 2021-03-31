@@ -52,4 +52,8 @@ public abstract class Persistence {
 
     public abstract long countOpenContractsBefore(String instrumentId, String exchangeId,
             Direction direction, LocalDateTime before);
+
+    public abstract void setProperty(String key, String value);
+
+    public abstract String getProperty(String key);
 }
