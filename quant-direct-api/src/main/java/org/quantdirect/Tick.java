@@ -28,18 +28,54 @@ public class Tick {
     private double highPrice;
     private double lowPrice;
     private double closePrice;
+    private double preClosePrice;
     private double settlePrice;
     private double preSettlePrice;
     private double askPrice;
     private double bidPrice;
     private long askVolume;
     private long bidVolume;
+    private double upperLimitPrice;
+    private double lowerLimitPrice;
     private long tradeVolume;
     private long openInterest;
+    private long preOpenInterest;
     private LocalDate tradingDay;
     private LocalDateTime updateTime;
 
     public Tick() {
+    }
+
+    public double getUpperLimitPrice() {
+        return upperLimitPrice;
+    }
+
+    public void setUpperLimitPrice(double upperLimitPrice) {
+        this.upperLimitPrice = upperLimitPrice;
+    }
+
+    public double getLowerLimitPrice() {
+        return lowerLimitPrice;
+    }
+
+    public void setLowerLimitPrice(double lowerLimitPrice) {
+        this.lowerLimitPrice = lowerLimitPrice;
+    }
+
+    public long getPreOpenInterest() {
+        return preOpenInterest;
+    }
+
+    public void setPreOpenInterest(long preOpenInterest) {
+        this.preOpenInterest = preOpenInterest;
+    }
+
+    public double getPreClosePrice() {
+        return preClosePrice;
+    }
+
+    public void setPreClosePrice(double preClosePrice) {
+        this.preClosePrice = preClosePrice;
     }
 
     public String getTickId() {
